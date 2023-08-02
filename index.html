@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Regular Expressions</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<style type="text/css">
+			ul{
+				font-size:0.7em;
+			}
+			li{
+				margin-bottom: 0.9em;
+			}
+			.hljs {
+				background-color: rgb(40, 13, 246);
+				border-radius: 5px;
+				filter: drop-shadow(0 0 25px rgb(255, 255, 255));
+			}
+		</style>
+	</head>
+	<body style="background-color:rgb(255, 0, 191)">
+		<div class="reveal">
+			<div class="slides">
+				<section  data-auto-animate><h1>Regular Expressions</h1>
+				</section>
+				<section data-auto-animate>
+					<section  data-auto-animate>
+						<h3>Regular Expressions</h3>
+						<p>Regular expressions are a powerful tool for searching and replacing within a string. </p>
+					</section>
+					<section  data-auto-animate>
+						<h3>Regular Expressions</h3>
+						<p>A regular expression consists of a pattern and optional flags. There are two syntaxes for creating a regular expression:</p>
+							<ul style="width:90%">
+								<li>
+									"Long" syntax: 
+									<pre><code>
+regexp = new RegExp("pattern", "flags")
+									</code></pre>
+								</li>
+								<br>
+								<li>
+									"Short" syntax using slashes "/":
+									<pre><code>
+regexp = /pattern/
+regexp = /pattern/flags
+									</code></pre>
+								</li>
+							</ul>		
+					</section>
+					<section  data-auto-animate>
+						<h3>Flags</h3>
+						<p>There are six flags in JavaScript:</p>
+						<ul>
+							<li><b>i</b> - With this flag, the search is case-insensitive: there is no difference between "A" and "a".</li>
+							<li><b>g</b> - With this flag, the search looks for all matches, without it, only the first one.</li>
+							<li><b>m</b> - Multiline mode.</li>
+							<li><b>s</b> - Turns on the "dotall" mode, in which the dot "." can match the newline character "\n".</li>
+							<li><b>u</b> - Enables full Unicode support. The flag allows correct processing of surrogate pairs.</li>
+							<li><b>y</b> - Search mode for a specific position in the text.</li>
+						</ul>			
+					</section>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate>
+						<h2>String and RegExp methods</h2>
+						<p>The <b>str.match(regexp)</b> method on the string str returns matches against the regular expression regexp.</p>
+						<pre>
+							<code>
+let str = "YesTerDay I said him YES!";
+let regexp=/yes/gi;
+str.match(regexp)
+
+// Yes,YES
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate>
+						<h2>String and RegExp methods</h2>
+						<p>The <b>str.replace(regexp, replacement)</b> method replaces matches with regexp in the string str with replacement (all if the g flag is present, otherwise only the first one).</p>
+						<pre style="width:100%">
+							<code>
+"I hope, I find job!".replace(/\shope/i, "\’m sure") 
+
+// I'm sure, I find job. 
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate>
+						<h2>String and RegExp methods</h2>
+					<p>The <b>regexp.test(str)</b> method checks if there is at least one match, if so, returns true, otherwise false.</p>
+					<pre>
+						<code>
+let str = "I love JavaScript";
+let regexp = /LOVE/i;
+
+regexp.test(str)
+
+// true
+						</code>
+					</pre>
+					</section>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate>
+						<h2>Character classes</h2>
+						<p>A character class is a special notation that matches any character from a particular set.</p>
+						<ul>
+							<li><b>\d</b> - Digit: character from 0 to 9.</li>
+							<li><b>\s</b> - Space: Includes the space, tab \t, newline \n, and some other rare whitespace characters denoted as \v, \f, and \r.</li>
+							<li><b>\w</b> - Word: or rather, a letter of the Latin alphabet or a number or an underscore _. </li>
+						</ul>
+					</section>
+					<section data-auto-animate>
+						<h2>Character classes</h2>
+						<pre><code>
+let str = "RSSchool2023other-text";
+let regexp = /RS\w\w\w\w\w\w\d\d\d\d/;
+
+str.match(regexp) 
+
+// RSSchool2023
+						</code></pre>
+					</section>
+					<section data-auto-animate>
+						<h2>Character classes</h2>
+						<p>For each character class, there is a "reverse class", denoted by the same letter, but in upper case.
+							"Reverse" means that it matches all other characters:
+						</p>
+						<ul>
+							<li><b>\D</b> - Not a digit: Any character other than \d, such as a letter.</li>
+							<li><b>\S</b> - Not a space: any character other than \s, such as a letter.</li>
+							<li><b>\W</b> - Any character other than \w, that is, not letters from the Latin alphabet, not an underscore, and not a number. In particular, Russian letters belong to this class.</li>
+						</ul>
+					</section>
+					<section data-auto-animate>
+						<h2>Character classes</h2>
+						<p>Dot "." is a special character class that matches "any character except newline "\n".</p>
+						<pre><code>
+"[".match(/./)   // [
+						</code></pre>
+						<p>If the regular expression has the "s" flag, then dot "." matches literally any character, even a newline "\n".</p>
+						<pre><code>
+"Q\nA".match(/q.A/si)   // Q\nA
+						</code></pre>
+					</section>
+				</section>
+				<section data-auto-animate>
+					<h2>Unicode: flag "u" and class \p{...}</h2>
+					<p>In a regular expression, you can search for a character with a given property by specifying it in \p{...}. For such regular expressions, the "u" flag must be used.</p>
+					<pre><code>
+let str = "СИЗО 6 other-text";
+
+str.match(/\p{L}\p{L}\p{L}\p{L}\s\d/u) 
+
+// СИЗО 6
+				</code></pre>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate>
+						<h2>Anchors: string start ^ and end $</h2>
+					<p>The caret ^ matches the beginning of the text, and the dollar $ matches the end.</p>
+					<pre><code>
+let str1 = "Regular expressions";
+let regexp=/^Regular\sExpressions$/i;
+regexp.test(str1) 
+
+// true			
+				</code></pre>
+					</section>
+					<section data-auto-animate>
+						<h2>Multiline mode of anchors ^ $, flag "m"</h2>
+					<p>In multiline mode, ^ and $ mean not only the beginning/end of the text, but also the beginning/end of each line in the text.</p>
+					<pre><code>
+let str = `+375291219346
++274888289992
++79014935343`;
+
+str.match(/^\+/gm) 
+
+// +, +, +	
+				</code></pre>
+					</section>
+				</section>
+				<section data-auto-animate>
+					<h2>Word boundary: \b</h2>
+					<p>A word boundary "\b" is a check, like ^ and $ together.</p>
+					<pre><code>
+"Hello, RSSchool!".match(/\bRSSchool\b/) 
+
+// RSSchool
+
+"Good bye, RSSchool!".match(/\bRS\b/) 
+
+// null						
+					</code></pre>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate>
+						<h2>Escaping, special characters</h2>
+						<p>There are special characters that have a special meaning in a regular expression. They are used for more complex search structures. Here is a complete list of these characters: [ ] \ ^ $ . | ? * + ( ) /. To use a special character as a regular character, append a backslash "\" to it.
+						This is called "character escaping".
+						</p>
+					</section>
+					<section data-auto-animate>
+						<h2>Escaping, special characters</h2>
+						<pre><code>
+"Try to fin<.>d a dot with <>".match(/\<\.\>/) 
+
+// <.>
+
+"Here you will not fin<,>d a dot with <>".match(/\<\.\>/) 
+
+// null
+
+"/".match(/\//) 
+
+// /
+					</code></pre>
+					</section>
+
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate>
+						<h2>Sets and ranges [...]</h2>
+						<h4>Sets</h4>
+						<p>Multiple characters or character classes in square brackets […] mean "look for any given character".
+							For example, [579] means any of 3 characters: '5', '7' or '9'.
+						</p>
+						<pre><code>
+"Cat hat".match(/[ch]at/gi) // Cat, hat
+
+"Teach".match(/T[ea]ch/)  // null (no matches)
+						</code></pre>
+					</section>
+					<section data-auto-animate>
+						<h2>Sets and ranges [...]</h2>
+						<h4>Ranges</h4>
+						<p>Square brackets can also contain ranges of characters.
+							For example, [a-z] matches a character between a and z, or [3-7] matches a number between 3 and 7.
+						</p>
+						<pre><code>
+"House number: 13A".match(/[0-4][0-9][A-D]/g) // 13A
+						</code></pre>	
+					</section>
+					<section data-auto-animate>
+						<h2>Sets and ranges [...]</h2>
+						<h4>Exclusive ranges</h4>
+						<p>In addition to regular ranges, there are "exclusive" ranges that look like [^…].
+							They are denoted by a caret ^ at the beginning of the range and match any character except those specified.	For example:						
+						</p>
+						<ul>
+							<li><b>[^357]</b> - any character except '3', '5', '7'.</li>
+							<li><b>[^0-9]</b> - any character except for a digit, same as \D.</li>
+							<li><b>[^\s]</b> - any non-whitespace character, same as \S.</li>
+						</ul>	
+					</section>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate>
+						<h2>Quantifiers +, *, ? and {n}</h2>
+						<h4>Quantity {n}</h4>
+						<p>The simplest quantifier is a number in curly braces: {n}.
+							It is added to a character (or character class, or set of [...], etc.) and specifies how many of them we need.
+						</p>
+						<ul>
+							<li>Exact number: {4}. The pattern \d{4} stands for exactly 4 digits and is equivalent to \d\d\d\d.</li>
+							<li>Range: {3,5}.  From 3 to 5</li>
+							<li>The upper limit can be omitted. Then the pattern \d{3,} will find a sequence of numbers with a length of 3 or more digits.</li>
+						</ul>
+					</section>
+					<section data-auto-animate>
+						<h2>Quantifiers +, *, ? and {n}</h2>
+						<h4>Short notation</h4>
+						<ul>
+							<li>+ Means "one or more". Same as {1,}.
+								<pre><code>
+let str = "+375(29)-123-45-67";
+
+str.match(/\d+/g) // 375,29,123,45,67
+</code></pre>
+							</li>
+							<li><b>?</b> - Means zero or one. Same as {0,1}. Makes the character optional.
+								<pre><code>
+let str = "Bear with beard";
+
+str.match(/beard?/gi) // Bear, beard
+</code></pre>
+							</li>
+							<li><b>*</b> - Means "zero or more". Same as {0,}. The symbol may be repeated many times or not at all.
+								<pre><code>
+"5000 20 1".match(/[125]0*/g) // 5000, 20, 1
+</code></pre>
+							</li>
+						</ul>
+					</section>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate>
+						<h2>Bracket groups</h2>
+						<p>Part of the pattern can be enclosed in parentheses (...). This is called a "bracket group".
+							This selection has two effects:
+							<ol>
+								<li>
+									Allows you to put part of the match in a separate array.
+								</li>
+								<li>
+									If you set a quantifier after brackets, then it will be applied to the entire contents of the bracket, and not to one character.
+							Parentheses group characters together.
+								</li>
+							</ol>
+						</p>
+					</section>
+					<section data-auto-animate>
+						<h2>Bracket groups</h2>
+						<p>Parentheses group characters together.</p>
+						<pre><code>
+"My cat said myaumyau myaumyaumyau!".match(/(myau)+/ig) 
+
+// myaumyau, myaumyaumyau
+						</code></pre>
+					</section>
+				</section>
+				<section data-auto-animate>
+					<section  data-auto-animate>
+						<h2>Backreferences in pattern</h2>
+						<h4>Backlink by number: \N</h4>
+						<p>A group can be referenced in a pattern using \N, where N is the group number.</p>
+						<pre><code>
+let str = "€1000 went to my deposit in €$";
+
+let regexp = /([€$])(.*?)\1/g;
+
+str.match(regexp)  //  €1000 went to my deposit in €
+
+						</code></pre>
+					</section>
+					<section  data-auto-animate>
+						<h2>Backreferences in pattern</h2>
+						<h4>Backlink by name: \k&#60;name&#62;</h4>
+						<p>If there are many bracket groups in the regular expression, then it is convenient to give them names.
+							You can use the syntax \k&#60;name&#62; to refer to a named group.
+							</p>
+						<pre><code>
+let str = "€1000 went to my deposit in €$"
+let regexp = /(?&#60;currency>[€$])(.*?)\k&#60;currency>/g;
+
+str.match(regexp) // €1000 went to my deposit in €
+</code></pre>
+					</section>
+
+				</section>
+				<section data-auto-animate>
+					<h2>Alternation (or) |</h2>
+					<p>Alternation is a term in regular expressions, which corresponds to the word "OR".
+						In regular expressions, it is denoted by the pipe character "|".
+					</p>
+					<pre><code>
+let regexp = /PHP|Pyton|java(script)?/gi;
+
+let str = "What language do you prefer, JavaScript, Pyton or PHP";
+
+str.match(regexp) 
+
+// JavaScript, Pyton, PHP
+					</code></pre>
+				</section>
+				<section data-auto-animate>
+					<p>We covered the basic Regular Expressions concepts. In addition you can also look at the concepts of greedy and lazy quantifiers, lookahead and  lookbehind checks, catastrophic backtracking, search at a given position, flag "y", RegExp and String methods on your own.</h2>
+					<h2>Thanks for your attention!</h2>
+				</section>
+			</div>
+		</div>
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
